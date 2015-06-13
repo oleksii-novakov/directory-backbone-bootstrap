@@ -26,10 +26,10 @@ var directory = {
 directory.Router = Backbone.Router.extend({
 
     routes: {
-        "":                         "home",
-        "contact":                  "contact",
-        "employees/:id":            "employeeDetails",
-        "department/:department":   "department"
+        "":                             "home",
+        "contact":                      "contact",
+        "employees/:id":                "employeeDetails",
+        "department/:departmentName":   "department"
     },
 
     initialize: function () {
@@ -78,11 +78,11 @@ directory.Router = Backbone.Router.extend({
         directory.shellView.selectMenuItem();
     },
 
-    department: function (department) {
-        var employees = new directory.DepartmentCollection({department: department});
-        console.log(employees);
+    department: function (departmentName) {
+        var employees = new directory.DepartmentCollection();
         var self = this;
         employees.fetch({
+            department: departmentName,
             success: function (data) {
                 console.log(data);
                 // Note that we could also 'recycle' the same instance of EmployeeFullView

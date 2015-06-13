@@ -35,7 +35,7 @@ directory.DepartmentCollection = Backbone.Collection.extend({
 
     sync: function(method, model, options) {
         if (method === "read") {
-            directory.store.findByDepartment(this.department, function (data) {
+            directory.store.findByDepartment(options.department, function (data) {
                 options.success(data);
             });
         }
