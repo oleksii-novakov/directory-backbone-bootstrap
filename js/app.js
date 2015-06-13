@@ -26,9 +26,10 @@ var directory = {
 directory.Router = Backbone.Router.extend({
 
     routes: {
-        "":                 "home",
-        "contact":          "contact",
-        "employees/:id":    "employeeDetails"
+        "":                         "home",
+        "contact":                  "contact",
+        "employees/:id":            "employeeDetails",
+        "department/:department":   "department"
     },
 
     initialize: function () {
@@ -72,6 +73,21 @@ directory.Router = Backbone.Router.extend({
                 // Note that we could also 'recycle' the same instance of EmployeeFullView
                 // instead of creating new instances
                 self.$content.html(new directory.EmployeeView({model: data}).render().el);
+            }
+        });
+        directory.shellView.selectMenuItem();
+    },
+
+    department: function (department) {
+        var employees = new directory.DepartmentCollection({department: department});
+        console.log(employees);
+        var self = this;
+        employees.fetch({
+            success: function (data) {
+                console.log(data);
+                // Note that we could also 'recycle' the same instance of EmployeeFullView
+                // instead of creating new instances
+                self.$content.html(new directory.EmployeeListView({model: data}).render().el);
             }
         });
         directory.shellView.selectMenuItem();

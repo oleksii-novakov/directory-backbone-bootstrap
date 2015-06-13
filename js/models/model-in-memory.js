@@ -29,6 +29,20 @@ directory.EmployeeCollection = Backbone.Collection.extend({
 
 });
 
+directory.DepartmentCollection = Backbone.Collection.extend({
+
+    model: directory.Employee,
+
+    sync: function(method, model, options) {
+        if (method === "read") {
+            directory.store.findByDepartment(this.department, function (data) {
+                options.success(data);
+            });
+        }
+    }
+
+});
+
 directory.ReportsCollection = Backbone.Collection.extend({
 
     model: directory.Employee,
@@ -56,6 +70,13 @@ directory.MemoryStore = function (successCallback, errorCallback) {
     this.findByManager = function (managerId, callback) {
         var employees = this.employees.filter(function (element) {
             return managerId === element.managerId;
+        });
+        callLater(callback, employees);
+    }
+
+    this.findByDepartment = function (department, callback) {
+        var employees = this.employees.filter(function (element) {
+            return department === element.department;
         });
         callLater(callback, employees);
     }
